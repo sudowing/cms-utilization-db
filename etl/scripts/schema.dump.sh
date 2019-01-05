@@ -1,0 +1,1 @@
+pg_dump -U $POSTGRES_USER --clean --schema=cms $POSTGRES_DB > /etl/sql/cms.sql
