@@ -16,8 +16,10 @@ release:
 
 publish:
 	# docker push sudowing/$(PROJ_NAME):1.1.0
-	docker push sudowing/$(PROJ_NAME):latest
-	docker push sudowing/$(PROJ_NAME):edge
+	docker push sudowing/$(PROJ_NAME):master
+	docker push sudowing/$(PROJ_NAME):develop
+	# docker push sudowing/$(PROJ_NAME):latest
+	# docker push sudowing/$(PROJ_NAME):edge
 
 run:
 	@docker-compose -f docker-compose.yml -f docker-compose.development.yml up

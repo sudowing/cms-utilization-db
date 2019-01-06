@@ -222,7 +222,9 @@ INSERT INTO cms.service_performance
     rank_est_ttl_mcare_pay_amt,
     rank_est_ttl_submitted_charge_amt,
     rank_est_ttl_mcare_allowed_amt,
-    rank_est_ttl_mcare_standardized_amt
+    rank_est_ttl_mcare_standardized_amt,
+    var_avg_mcare_submitted_charge_pay_amt,
+    rank_var_avg_mcare_submitted_charge_pay_amt
   )
 SELECT
     performance.hcpcs_code,
@@ -274,7 +276,9 @@ SELECT
     performance.rank_est_ttl_mcare_pay_amt,
     performance.rank_est_ttl_submitted_charge_amt,
     performance.rank_est_ttl_mcare_allowed_amt,
-    performance.rank_est_ttl_mcare_standardized_amt
+    performance.rank_est_ttl_mcare_standardized_amt,
+    performance.var_avg_mcare_submitted_charge_pay_amt,
+    performance.rank_var_avg_mcare_submitted_charge_pay_amt
 FROM
   cms.live_service_performance performance
 ;

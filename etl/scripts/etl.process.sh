@@ -17,7 +17,4 @@ echo " " \
 && echo " :: Destroying Temp Tables" \
 && psql -d $POSTGRES_DB -U $POSTGRES_USER -f /etl/sql/temp.destroy.sql \
 && echo " ............................" \
-&& echo " :: Deleting CMS Data CSV" \
-&& rm /tmp/cms-utilization.csv \
-&& echo " ............................" \
 && echo "CMS UTILIZATION DATA ETL [COMPLETE]"

@@ -1,1 +1,1 @@
-psql -d $POSTGRES_DB -U $POSTGRES_USER -f /etl/sql/cms.sql
+pg_restore -j 8 -d $POSTGRES_DB -U $POSTGRES_USER /etl/sql/cms.dump
