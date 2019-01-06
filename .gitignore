@@ -1,7 +1,8 @@
 
 # 2+ gb sql dump. Need to ignore this
+etl/sql/cms.dump
 etl/sql/cms.sql
 
 # local files
 volumes/db/data
-volumes/db/data_hold
+volumes/tmp
