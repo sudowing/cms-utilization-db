@@ -283,6 +283,11 @@ FROM
   cms.live_service_performance performance
 ;
 
+
+INSERT INTO cms.service_provider_performance_summary_type (id, slug, description) VALUES (1, 'overall', 'Overall Summary');
+INSERT INTO cms.service_provider_performance_summary_type (id, slug, description) VALUES (2, 'drug_yes', 'HCPCS Drug Y');
+INSERT INTO cms.service_provider_performance_summary_type (id, slug, description) VALUES (3, 'drug_no', 'HCPCS Drug N');
+
 INSERT INTO cms.service_provider_performance_summary
 (
   summary_type,
