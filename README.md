@@ -1,8 +1,8 @@
 
 # CMS Utilization & Payment Database
-
-	The purpose of the project is to aid in the pursuit of healthcare price transparency by providing a containerized database service populated with data published by CMS (along with derived analytic data).
-
+```
+The purpose of the project is to aid in the pursuit of healthcare price transparency by providing a containerized database service populated with data published by CMS (along with derived analytic data).
+```
 For additional domain information see :
 - [`CMS Utilization & Payment Data`](https://data.cms.gov/Medicare-Physician-Supplier/Medicare-Provider-Utilization-and-Payment-Data-Phy/utc4-f9xp/data)
 - [`NPPES NPI: wikipedia`](https://en.wikipedia.org/wiki/National_Provider_Identifier)
@@ -27,21 +27,15 @@ These instructions will help you get the project up and running.
 
 ## Deployment
 
-To run **production image**:
+This process starts the database (port 5432) (configured to maintain persistent data) and bootstraps the database by restoring a db.dump that is baked into the docker image.
 
 ```
 make start
 ```
-* Database | port 5434
-
-This process starts the database (with persistent data), and bootstraps the database by restoring a db.dump that is baked into the docker image.
-
 
 **NOTE 1:** Bootstraping Postgresql is done via a launch script that is run as part of the initiation process.
 This scripts restores the schema (structure & data) from a large `pg_dump` (1gb).
-The first time this is run, it, it will take 10+ mins to 
-
-(subsequent starts of the db service rely on persistent data)
+The first time this is run, it will take 10+ mins to (subsequent starts of the db service rely on persistent data)
 
 	:: real	11m5.184s
 	:: user	0m15.680s
@@ -137,9 +131,9 @@ The data is organized into 9 tables (5 **source data** tables & 4 **analytic dat
 
 `service_performance` aggregates performance statistics for each HCPCS service across all providers.
 
-`service_provider_performance` extends the data contained in `provider_performance`, estimates cumulative amounts charged & paid (`n_of_svcs` * `amt`), and also compares each providers performance attributes against **all other providers** that also perform the service
+`service_provider_performance` extends the data contained in `provider_performance`, estimates cumulative amounts charged & paid (`n_of_svcs` * `amt`), and also compares each providers performance attributes against **all other providers** that also perform the service (rankings)
 
-`service_provider_performance_summary` aggregates performance statistics by provider across all HCPCS services the provider supports. Also estimates cumulative amounts charged & paid (`n_of_svcs` * `amt`), compares each providers performance attributes against **all other providers**.
+`service_provider_performance_summary` aggregates performance statistics by provider across all HCPCS services the provider supports. Also estimates cumulative amounts charged & paid (`n_of_svcs` * `amt`), compares each providers performance attributes against **all other providers** (rankings).
 
 `service_provider_performance_summary_type` contains definations of the different ways to group providers in order to generate the data & rankings within `service_provider_performance_summary`.
 Currently, it only supports three groups (all providers + all services, all non-HSPCS services by all providers, and 
@@ -150,7 +144,7 @@ Future plans are to group and rank by organizational membership (internal enterp
 
 ## Additional Data Sets
 
-Similar projects can certainly be produced using data from these **additional data stores**:
+Similar projects can be built using data from these **additional data stores**:
 - [`CMS Data Catalog`](https://data.cms.gov/)
 - [`Open Payments: Overview`](https://www.cms.gov/openpayments/)
 - [`Open Payments: Data`](https://openpaymentsdata.cms.gov/)
