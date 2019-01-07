@@ -1,6 +1,8 @@
-
 # CMS Utilization & Payment Database
-### The purpose of the project is to aid in the pursuit of healthcare price transparency by providing a containerized database service populated with data published by CMS (along with derived analytic data).
+## The purpose of the project is to provide a containerized database service loaded with CMS data to increase the utility of the data resource.
+
+### This is an effort aimed to support the pursuit of healthcare price transparency by making it easier for stakeholders to compare costs and understand finer details related to healthcare costs (for example: variance between charges & payments, variance in payments between providers for the same service, or average costs nationally for individual healthcare services).
+
 
 For additional domain information see :
 - [`CMS Utilization & Payment Data`](https://data.cms.gov/Medicare-Physician-Supplier/Medicare-Provider-Utilization-and-Payment-Data-Phy/utc4-f9xp/data)
@@ -22,10 +24,6 @@ For additional domain information see :
 
 ## Getting Started
 
-These instructions will help you get the project up and running.
-
-## Deployment
-
 ```
 make start
 ```
@@ -40,6 +38,22 @@ This process will take 10+ mins to complete on the first run. Subsequent starts 
 	:: user	0m15.680s
 	:: sys	0m2.800s
 
+
+---
+
+
+#### Source data
+
+
+Medicare Provider Utilization and Payment Data: Physician and Other Supplier PUF CY2016
+
+The Centers for Medicare & Medicaid Services (CMS) has prepared a public data set that provides information on services and procedures provided to Medicare beneficiaries by physicians and other healthcare professionals.
+
+The dataset contains information on utilization, payment (allowed amount and Medicare payment), and submitted charges organized by National Provider Identifier (NPI), Healthcare Common Procedure Coding System (HCPCS) code, and place of service.
+
+	based on information from CMS administrative claims data for Medicare beneficiaries enrolled in the fee-for-service program available from the CMS Chronic Condition Data Warehouse (www.ccwdata.org).
+
+	calendar year 2016 and contains 100% final-action physician/supplier Part B non-institutional line items for the Medicare fee-for-service population.
 
 ---
 
@@ -85,6 +99,38 @@ One thing I learned by building that project was that prisma currently doesn't s
 To solve this problem, new primary keys were defined (as `prisma_id`), which are all auto incrementing.
 
 The original keys still exist, but are no long the primary key for the respective tables.
+
+---
+
+
+
+#### Problems // shortcomings
+
+This dataset is limited to services billed to CMS and does not include all payers.
+
+Charge Submitted vs Payment Accepted.
+The magic behind this Δ
+
+Providers are assigned Unique identifiers (NPIs)
+Services listed rely on HCPCS Codes
+
+The Healthcare Common Procedure Coding System (HCPCS, often pronounced by its acronym as "hick picks") is a set of health care procedure codes based on the American Medical Association's Current Procedural Terminology (CPT).
+
+##### sadfdf
+
+The goal here is for a first down -- not a touchdown.
+
+This project  hopes 
+
+ investigate these differences.
+
+The data presented here can is 
+
+ and provide leverage 
+
+There is a difference bet
+
+
 
 ---
 
