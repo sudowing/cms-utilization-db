@@ -1,17 +1,16 @@
 
-# CMS Utilization & Payment Data [2016]
+# CMS Utilization & Payment Database
 
 	The purpose of the project is to aid in the pursuit of healthcare price transparency by providing a containerized database service populated with data published by CMS (along with derived analytic data).
 
-For more information about see :
+For additional domain information see :
 - [`CMS Utilization & Payment Data`](https://data.cms.gov/Medicare-Physician-Supplier/Medicare-Provider-Utilization-and-Payment-Data-Phy/utc4-f9xp/data)
 - [`NPPES NPI: wikipedia`](https://en.wikipedia.org/wiki/National_Provider_Identifier)
 - [`NPPES NPI: api`](https://npiregistry.cms.hhs.gov/)
 - [`HCPCS: wikipedia`](https://en.wikipedia.org/wiki/Healthcare_Common_Procedure_Coding_System)
 - [`HCPCS: CMS Datasets`](https://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets/Alpha-Numeric-HCPCS.html)
 
-
-
+---
 
 
 
@@ -55,6 +54,25 @@ The first time this is run, it, it will take 10+ mins to
 
 ## Development
 
+This command starts the DB service, and mounts several of the local directories in the container.
+```
+make run
+```
+
+This command connects to the container running the DB service and generates a sql export via `pg_dump`.
+
+```
+make db-dump-sql
+```
+
+**NOTE 1:** This sql.dump file is large (1gb) and as such, is gitignored and not stored in the repo. To generate this file (for inspection or when publishing a new docker image), you must generate this file **before** baking the docker image.
+
+
+
+
+
+
+
 
 enter:
 
@@ -63,36 +81,9 @@ db-load-via-etl:
 	/volumes/tmp/cms-utilization.csv
 
 db-load-via-sql:
-db-dump-sql:
-/etl/sql/cms.dump
-
-**NOTE 1:** This sql.dump file is large (1gb) and as such, is gitignored and not stored in the repo. To generate this file (for inspection or when publishing a new docker image), simply run:
-
-```
-make db-dump-sql
-```
 
 
-To build and tag a **production image** (`cms-utilization-db:latest`) with your local changes use:
 
-```
-make release
-```
-
-**NOTE:** Production images hosted on [Docker Hub](https://hub.docker.com/r/sudowing/cms-utilization-db/)
-
-
----
-
-
-## Development
-
-Development doesn't require local installion of node or any of the project's dependencies. Instead, those dependencies are bundled within the docker container and [`nodemon`](https://nodemon.io/) monitors changes to the app's source (which is mounted from your local system to the docker container) and reload the microservice.
-
-This command starts the app, it's dependencies (database & cache), and additional development services (https proxy & more).
-```
-make run
-```
 
 
 ---
@@ -121,14 +112,16 @@ make run
 
 
 
+
+
+
+---
 
 ## Schema
 
-Below are diagrams of the tables withing the `cms` schema.
+The data is organized into 9 tables (5 **source data** tables & 4 **analytic data** tables).
 
-
-
-
+### Source Data Tables
 
 ![cms-schema source-data-tables](assets/img/readme/cms_schema_source_data.png "CMS Schema | Tables based on .CSV Source Data")
 
@@ -137,6 +130,8 @@ Below are diagrams of the tables withing the `cms` schema.
 `providers` (and related tables `providers_individuals` & `providers_organizations`) contains identity information & address for each provider (distinguished by the `providers.entity_type` value).
 
 `provider_performance` contains performance statistics for each HCPCS service provided by each provider.
+
+### Analytic Data Tables
 
 ![cms-schema analytic-data-tables](assets/img/readme/cms_schema_analytic_data.png "CMS Schema | Tables based on .CSV Source Data")
 
