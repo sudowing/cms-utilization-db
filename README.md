@@ -1,8 +1,7 @@
 
 # CMS Utilization & Payment Database
-```
-The purpose of the project is to aid in the pursuit of healthcare price transparency by providing a containerized database service populated with data published by CMS (along with derived analytic data).
-```
+### The purpose of the project is to aid in the pursuit of healthcare price transparency by providing a containerized database service populated with data published by CMS (along with derived analytic data).
+
 For additional domain information see :
 - [`CMS Utilization & Payment Data`](https://data.cms.gov/Medicare-Physician-Supplier/Medicare-Provider-Utilization-and-Payment-Data-Phy/utc4-f9xp/data)
 - [`NPPES NPI: wikipedia`](https://en.wikipedia.org/wiki/National_Provider_Identifier)
@@ -27,86 +26,19 @@ These instructions will help you get the project up and running.
 
 ## Deployment
 
-This process starts the database (port 5432) (configured to maintain persistent data) and bootstraps the database by restoring a db.dump that is baked into the docker image.
-
 ```
 make start
 ```
 
-**NOTE 1:** Bootstraping Postgresql is done via a launch script that is run as part of the initiation process.
-This scripts restores the schema (structure & data) from a large `pg_dump` (1gb).
-The first time this is run, it will take 10+ mins to (subsequent starts of the db service rely on persistent data)
+This process starts the database (port 5432) (configured to maintain persistent data) and bootstraps the database by restoring a db.dump that is baked into the docker image.
+
+**NOTE 1:** Bootstraping Postgresql is done via a launch script that is run as part of the initiation process and restores the schema (structure & data) from a large `pg_dump` (1gb).
+
+This process will take 10+ mins to complete on the first run. Subsequent starts rely on persistent data.
 
 	:: real	11m5.184s
 	:: user	0m15.680s
 	:: sys	0m2.800s
-
-
-
-
-
-
-## Development
-
-This command starts the DB service, and mounts several of the local directories in the container.
-```
-make run
-```
-
-This command connects to the container running the DB service and generates a sql export via `pg_dump`.
-
-```
-make db-dump-sql
-```
-
-**NOTE 1:** This sql.dump file is large (1gb) and as such, is gitignored and not stored in the repo. To generate this file (for inspection or when publishing a new docker image), you must generate this file **before** baking the docker image.
-
-
-
-
-
-
-
-
-enter:
-
-db-load-via-etl:
-/etl/scripts/etl.process.sh
-	/volumes/tmp/cms-utilization.csv
-
-db-load-via-sql:
-
-
-
-
-
----
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ---
@@ -142,6 +74,20 @@ Future plans are to group and rank by organizational membership (internal enterp
 
 ---
 
+## Prisma IDs
+
+The original purpose of this DB was to serve as the datastore for a GraphQL service.
+
+[`That project`](https://github.com/sudowing/cms-utilization-graphql) uses [`prisma`](https://github.com/prisma/prisma) to serve a GraphQL API to the data.
+
+One thing I learned by building that project was that prisma currently doesn't support composite primary keys
+
+To solve this problem, new primary keys were defined (as `prisma_id`), which are all auto incrementing.
+
+The original keys still exist, but are no long the primary key for the respective tables.
+
+---
+
 ## Additional Data Sets
 
 Similar projects can be built using data from these **additional data stores**:
@@ -153,6 +99,51 @@ Similar projects can be built using data from these **additional data stores**:
 - [`DATA.GOV: Health Data Catalog`](https://catalog.data.gov/dataset?_organization_limit=0&organization=hhs-gov#topic=health_navigation)
 - [`HealthData.gov`](https://healthdata.gov/)
 - [`Chronic Conditions Data Warehouse`](https://www.ccwdata.org/web/guest/home)
+
+---
+
+
+
+
+## Development
+
+```
+make run
+```
+
+This command starts the DB service, and mounts several of the local directories (scripts, sql, tmp) in the container.
+
+
+
+```
+make db-dump-sql
+```
+
+This command connects to the container running the DB service and generates a sql export via `pg_dump`.
+
+
+**NOTE 1:** This sql.dump file is large (1gb) and as such, is `.gitignore`d and not stored in the repo. To generate this file (for inspection or when publishing a new docker image), you must generate this file **before** baking the docker image.
+
+
+```
+make db-load-via-sql
+```
+
+This command connects to the container running the DB service and restores the db using the sql.dump file generated above.
+
+```
+make db-load-via-etl
+```
+
+This command builds the database through ETL process that downloads the original CSV, loads it into temp tables, then builds prod tables and populates them from the temp tables. 
+
+Anyone interested in validating the integrity of the data provided by this project, should focus 
+
+**NOTE 1:** This ETL process takes 2.5+ hours.
+
+**NOTE 2:** This ETL process downloads the original CSV from the goverment's servers and stores it inside the container at `/tmp/cms-utilization.csv`
+If you're running the project in development mode (`make run`), this file should be available to you at `/volumes/tmp/cms-utilization.csv` 
+
 
 ---
 
