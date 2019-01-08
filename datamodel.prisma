@@ -1,0 +1,174 @@
+type Provider_performance @pgTable(name: "provider_performance") {
+  id: Int! @id @pgColumn(name: "prisma_id") @unique
+  npi: Providers @pgRelation(column: "npi")
+  mcare_participation_indicator: String!
+  place_of_service: String!
+  hcpcs_code: Services @pgRelation(column: "hcpcs_code")
+  n_of_svcs: Float!
+  n_of_mcare_beneficiaries: Int!
+  n_of_distinct_mcare_beneficiary_per_day_svcs: Int!
+  avg_mcare_allowed_amt: Float!
+  avg_submitted_charge_amt: Float!
+  avg_mcare_pay_amt: Float!
+  avg_mcare_standardized_amt: Float!
+}
+
+type Providers @pgTable(name: "providers") {
+  id: Int! @id @pgColumn(name: "npi") @unique
+  npi: Int! @unique
+  entity_type: String!
+  provider_type: String!
+  address_street_01: String!
+  address_street_02: String
+  address_city: String!
+  address_state: String!
+  address_zip_code: String!
+  address_country: String!
+  address_latitude: Float
+  address_longitude: Float
+  provider_performances: [Provider_performance!]!
+  providers_individualses: [Providers_individuals!]!
+  providers_organizationses: [Providers_organizations!]!
+  service_provider_performance_summaries: [Service_provider_performance_summary!]!
+  service_provider_performances: [Service_provider_performance!]!
+}
+
+type Providers_individuals @pgTable(name: "providers_individuals") {
+  id: Int! @id @pgColumn(name: "npi") @unique
+  npi: Providers @pgRelation(column: "npi")
+  name_first: String!
+  name_last: String!
+  name_middle: String
+  credentials: String
+  gender: String!
+}
+
+type Providers_organizations @pgTable(name: "providers_organizations") {
+  id: Int! @id @pgColumn(name: "npi") @unique
+  npi: Providers @pgRelation(column: "npi")
+  name: String!
+}
+
+type Service_performance @pgTable(name: "service_performance") {
+  id: Int! @id @pgColumn(name: "prisma_id") @unique
+  hcpcs_code: Services @pgRelation(column: "hcpcs_code")
+  entity_type: String!
+  providers: Int!
+  n_of_svcs: Float!
+  n_of_distinct_mcare_beneficiary_per_day_svcs: Int!
+  n_of_mcare_beneficiaries: Int!
+  avg_avg_mcare_pay_amt: Float!
+  avg_avg_submitted_charge_amt: Float!
+  avg_avg_mcare_allowed_amt: Float!
+  avg_avg_mcare_standardized_amt: Float!
+  min_avg_mcare_pay_amt: Float!
+  max_avg_mcare_pay_amt: Float!
+  var_avg_mcare_pay_amt: Float!
+  min_avg_mcare_allowed_amt: Float!
+  max_avg_mcare_allowed_amt: Float!
+  var_avg_mcare_allowed_amt: Float!
+  min_avg_submitted_charge_amt: Float!
+  max_avg_submitted_charge_amt: Float!
+  var_avg_submitted_charge_amt: Float!
+  min_avg_mcare_standardized_amt: Float!
+  max_avg_mcare_standardized_amt: Float!
+  var_avg_mcare_standardized_amt: Float!
+  est_ttl_mcare_pay_amt: Float!
+  est_ttl_submitted_charge_amt: Float!
+  est_ttl_mcare_allowed_amt: Float!
+  est_ttl_mcare_standardized_amt: Float!
+  rank_providers: Int!
+  rank_n_of_svcs: Int!
+  rank_n_of_mcare_beneficiaries: Int!
+  rank_n_of_distinct_mcare_beneficiary_per_day_svcs: Int!
+  rank_avg_avg_mcare_pay_amt: Int!
+  rank_avg_avg_submitted_charge_amt: Int!
+  rank_avg_avg_mcare_allowed_amt: Int!
+  rank_avg_avg_mcare_standardized_amt: Int!
+  rank_min_avg_mcare_pay_amt: Int!
+  rank_max_avg_mcare_pay_amt: Int!
+  rank_var_avg_mcare_pay_amt: Int!
+  rank_min_avg_mcare_allowed_amt: Int!
+  rank_max_avg_mcare_allowed_amt: Int!
+  rank_var_avg_mcare_allowed_amt: Int!
+  rank_min_avg_mcare_standardized_amt: Int!
+  rank_max_avg_mcare_standardized_amt: Int!
+  rank_var_avg_mcare_standardized_amt: Int!
+  rank_min_avg_submitted_charge_amt: Int!
+  rank_max_avg_submitted_charge_amt: Int!
+  rank_var_avg_mcare_submitted_charge_pay_amt: Int!
+  rank_est_ttl_mcare_pay_amt: Int!
+  rank_est_ttl_mcare_allowed_amt: Int!
+  rank_est_ttl_mcare_standardized_amt: Int!
+  rank_est_ttl_submitted_charge_amt: Int!
+  var_avg_mcare_submitted_charge_pay_amt: Float!
+  rank_var_avg_submitted_charge_amt: Int!
+}
+
+type Service_provider_performance @pgTable(name: "service_provider_performance") {
+  id: Int! @id @pgColumn(name: "prisma_id") @unique
+  hcpcs_code: Services @pgRelation(column: "hcpcs_code")
+  npi: Providers @pgRelation(column: "npi")
+  entity_type: String!
+  mcare_participation_indicator: String!
+  place_of_service: String!
+  n_of_svcs: Float!
+  n_of_distinct_mcare_beneficiary_per_day_svcs: Int!
+  n_of_mcare_beneficiaries: Int!
+  avg_mcare_pay_amt: Float!
+  avg_submitted_charge_amt: Float!
+  avg_mcare_allowed_amt: Float!
+  avg_mcare_standardized_amt: Float!
+  est_ttl_mcare_pay_amt: Float!
+  est_ttl_submitted_charge_amt: Float!
+  rank_n_of_svcs: Int!
+  rank_n_of_distinct_mcare_beneficiary_per_day_svcs: Int!
+  rank_n_of_mcare_beneficiaries: Int!
+  rank_avg_mcare_standardized_amt: Int!
+  rank_avg_mcare_allowed_amt: Int!
+  rank_avg_submitted_charge_amt: Int!
+  rank_avg_mcare_pay_amt: Int!
+  rank_est_ttl_mcare_pay_amt: Int!
+  rank_est_ttl_submitted_charge_amt: Int!
+  var_avg_mcare_submitted_charge_pay_amt: Float!
+  rank_var_avg_mcare_submitted_charge_pay_amt: Int!
+}
+
+type Service_provider_performance_summary @pgTable(name: "service_provider_performance_summary") {
+  id: Int! @id @pgColumn(name: "prisma_id") @unique
+  npi: Providers @pgRelation(column: "npi")
+  entity_type: String!
+  ttl_hcpcs_code: String!
+  ttl_n_of_svcs: Int!
+  est_ttl_submitted_charge_amt: Float!
+  est_ttl_mcare_pay_amt: Float!
+  est_ttl_mcare_pay_amt_by_ttl_n_of_svcs: Float!
+  est_ttl_mcare_pay_amt_by_ttl_hcpcs_code: Float!
+  var_est_ttl_mcare_submitted_charge_pay_amt: Float!
+  rank_ttl_hcpcs_code: Int!
+  rank_ttl_n_of_svcs: Int!
+  rank_est_ttl_submitted_charge_amt: Int!
+  rank_est_ttl_mcare_pay_amt: Int!
+  rank_var_est_ttl_mcare_submitted_charge_pay_amoun: Int!
+  rank_est_ttl_mcare_pay_amt_by_ttl_hcpcs_code: Int!
+  rank_est_ttl_mcare_pay_amt_by_ttl_n_of_servi: Int!
+  summary_type: Service_provider_performance_summary_type @pgRelation(column: "summary_type")
+}
+
+type Service_provider_performance_summary_type @pgTable(name: "service_provider_performance_summary_type") {
+  id: ID! @id @pgColumn(name: "id") @unique
+  slug: String!
+  description: String!
+  group_membership: Boolean! @default(value: true)
+  service_provider_performance_summaries: [Service_provider_performance_summary!]!
+}
+
+type Services @pgTable(name: "services") {
+  id: ID! @id @pgColumn(name: "hcpcs_code") @unique
+  hcpcs_code: String! @unique
+  hcpcs_description: String!
+  hcpcs_drug_indicator: String!
+  provider_performances: [Provider_performance!]!
+  service_performances: [Service_performance!]!
+  service_provider_performances: [Service_provider_performance!]!
+}
