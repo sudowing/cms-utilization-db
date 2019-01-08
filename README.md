@@ -12,7 +12,7 @@ Examples of detailed healthcare costs:
 Examples of derived analytic data:
 - Ranking of providers by Total Services Provided
 - Ranking of providers by HCPCS Services provider
-- Estimated sums each provider `charged` & `recieved` for each individual HCPCS Service
+- Estimated sums each provider `charged` & `received` for each individual HCPCS Service
 - Ranking of providers by Total $ Charged to CMS
 - Ranking of providers by Total $ Paid from CMS
 
@@ -50,7 +50,7 @@ This initiation process will take 10+ mins (sample `time` report provided below)
 
 The foundation of this project is a `.csv` dataset titled, _Medicare Provider Utilization and Payment Data: Physician and Other Supplier PUF CY2016_. You can find the original data.
 
-You can find a full description of the dataset on [`their site`](https://data.cms.gov/Medicare-Physician-Supplier/Medicare-Provider-Utilization-and-Payment-Data-Phy/utc4-f9xp/data), but for convience, a summarized description is below: 
+You can find a full description of the dataset on [`their site`](https://data.cms.gov/Medicare-Physician-Supplier/Medicare-Provider-Utilization-and-Payment-Data-Phy/utc4-f9xp/data), but for convenience, a summarized description is below: 
 
 ```
 The Centers for Medicare & Medicaid Services (CMS) has prepared a public data set that provides information on services and procedures provided to Medicare beneficiaries by physicians and other healthcare professionals.
@@ -122,11 +122,11 @@ Similar projects can be built using data from these **additional data stores**:
 
 ## Project Origin & Inspiration
 
-I've been interested in healthcare utilization & payment data since I read an article by Steven Bril in 2013.
+I've been interested in healthcare utilization & payment data since I read an article by Steven Brill in 2013.
 
 In the years since, I've seen dozens of smaller, similar reports in various media, but I've yet to see anything as comprehensive and detailed as that work.
 
-In appreciation of that work, and to direct interested parties towards information that is probably relevent to their projects, I'm publishing links to some of those resources here.
+In appreciation of that work, and to direct interested parties towards information that is probably relevant to their projects, I'm publishing links to some of those resources here.
 
 - [`Original Time Article`](http://time.com/198/bitter-pill-why-medical-bills-are-killing-us/)
   - **Title**: Bitter Pill: Why Medical Bills Are Killing Us
@@ -176,7 +176,7 @@ Anyone interested in validating the integrity of the data provided by this proje
 
 **NOTE 1:** This ETL process takes 2.5+ hours.
 
-**NOTE 2:** This ETL process downloads the original CSV from the goverment's servers and stores it inside the container at `/tmp/cms-utilization.csv`
+**NOTE 2:** This ETL process downloads the original CSV from the government’s servers and stores it inside the container at `/tmp/cms-utilization.csv`
 If you're running the project in development mode (`make run`), this file should be available to you at `/volumes/tmp/cms-utilization.csv` 
 
 
