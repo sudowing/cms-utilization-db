@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 ### Fixed
 
+## [1.2.0](https://github.com/sudowing/cms-utilization-db/tree/v1.2.0) - 2019-01-08
+
+### Fixed
+- Fixed typo in readme.
+
 ## [1.1.0](https://github.com/sudowing/cms-utilization-db/tree/v1.1.0) - 2019-01-08
 
 ### Added
