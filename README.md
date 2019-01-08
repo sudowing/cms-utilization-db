@@ -1,30 +1,15 @@
 # CMS Utilization & Payment Database
 
-#### The purpose of the project is to provide a containerized database service loaded with CMS data in order to increase the utility of that data.
+### The purpose of the project is to provide a containerized database service loaded with CMS data in order to increase the utility of the dataset and reduce the technical overhead associated with consuming it.
 
+Stakeholders pursuing healthcare price transparency can use this database to learn about costs & volumes of HCPCS services, provider performance (as reported in source and derived analytic data), and understand finer details related to healthcare costs like.
 
-...
-and ease access 
-by 
-reducing the technical overhead associated with 
-
-
-
-for others who are also pursuing healthcare price transparency 
-
-#### sdf
-
-stakeholders to compare costs and understand finer details related to healthcare costs like:
-...
-
-
-Examples of fine details:
+Examples of detailed healthcare costs:
 - variance between charges & payments
 - variance in payments between providers for the same service
 - average costs nationally for individual healthcare services
 
-Examples of analytic data:
-
+Examples of derived analytic data:
 - Ranking of providers by Total Services Provided
 - Ranking of providers by HCPCS Services provider
 - Estimated sums each provider `charged` & `recieved` for each individual HCPCS Service
@@ -121,66 +106,6 @@ To resolve this in the meantime, new **auto incrementing** primary keys were def
 
 ---
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#### Shortcomings of this Dataset
-
-This dataset is limited to services billed to CMS and does not include all payers.
-
-Charge Submitted vs Payment Accepted.
-The magic behind this Δ
-
-Providers are assigned Unique identifiers (NPIs)
-Services listed rely on HCPCS Codes
-
-The Healthcare Common Procedure Coding System (HCPCS, often pronounced by its acronym as "hick picks") is a set of health care procedure codes based on the American Medical Association's Current Procedural Terminology (CPT).
-
-##### sadfdf
-
-The goal here is for a first down -- not a touchdown.
-
-This project  hopes 
-
- investigate these differences.
-
-The data presented here can is 
-
- and provide leverage 
-
-There is a difference bet
-
-
-
----
-
 ## Additional Data Sets
 
 Similar projects can be built using data from these **additional data stores**:
@@ -195,8 +120,29 @@ Similar projects can be built using data from these **additional data stores**:
 
 ---
 
+## Project Origin & Inspiration
 
+I've been interested in healthcare utilization & payment data since I read an article by Steven Bril in 2013.
 
+In the years since, I've seen dozens of smaller, similar reports in various media, but I've yet to see anything as comprehensive and detailed as that work.
+
+In appreciation of that work, and to direct interested parties towards information that is probably relevent to their projects, I'm publishing links to some of those resources here.
+
+- [`Original Time Article`](http://time.com/198/bitter-pill-why-medical-bills-are-killing-us/)
+  - **Title**: Bitter Pill: Why Medical Bills Are Killing Us
+  - **Author**: Steven Brill
+  - **Date**: Apr 04, 2013
+- [`Minutes from Congressional Hearing`](https://www.govinfo.gov/content/pkg/CHRG-113shrg87496/pdf/CHRG-113shrg87496.pdf)
+  - **Event**: Congressional Hearing before the COMMITTEE ON FINANCE
+  - **Title**: HIGH PRICES, LOW TRANSPARENCY: THE BITTER PILL OF HEALTH CARE COSTS
+  - **Date**: JUNE 18, 2013
+  - **Note**: Specific attention to the opening statement on page 5-6.
+- [**`CMS FAQs about 2019 Pricing Transparency Requirements`**](https://www.cms.gov/Medicare/Medicare-Fee-for-Service-Payment/AcuteInpatientPPS/Downloads/FAQs-Req-Hospital-Public-List-Standard-Charges.pdf)
+- [**`Federal Register Volume 83, Number 192`**](https://www.govinfo.gov/content/pkg/FR-2018-10-03/html/2018-21500.htm)
+  - **Section X**: Requirements for Hospitals To Make Public a List of Their 
+  Standard Charges via the Internet
+
+---
 
 ## Development
 
@@ -206,14 +152,11 @@ make run
 
 This command starts the DB service, and mounts several of the local directories (scripts, sql, tmp) in the container.
 
-
-
 ```
 make db-dump-sql
 ```
 
 This command connects to the container running the DB service and generates a sql export via `pg_dump`.
-
 
 **NOTE 1:** This sql.dump file is large (1gb) and as such, is `.gitignore`d and not stored in the repo. To generate this file (for inspection or when publishing a new docker image), you must generate this file **before** baking the docker image.
 
