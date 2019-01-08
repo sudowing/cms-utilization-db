@@ -25,7 +25,10 @@ run:
 	@docker-compose -f docker-compose.yml -f docker-compose.development.yml up
 
 start:
-	@docker-compose -f docker-compose.yml up -d
+	@docker-compose -f docker-compose.yml up
+
+start-with-prisma:
+	@docker-compose -f docker-compose.yml -f docker-compose.prisma.yml up
 
 stop:
 	@docker-compose stop
