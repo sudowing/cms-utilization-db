@@ -1,0 +1,25 @@
+version: "2"
+services:
+  cms-utilization-prisma:
+    image: prismagraphql/prisma:1.23
+    restart: always
+    ports:
+    - "4466:4466"
+    depends_on:
+    - cms-utilization-postgres
+    environment:
+      PRISMA_CONFIG: |
+        port: 4466
+        # uncomment the next line and provide the env var PRISMA_MANAGEMENT_API_SECRET=my-secret to activate cluster security
+        # managementApiSecret: my-secret
+        databases:
+          default:
+            connector: postgres
+            host: __REPLACE__WITH__LOCAL__IP__ # REPLACE WITH HOST IP
+            port: 5432
+            database: govdata
+            schema: cms
+            user: dbuser
+            password: dbpassword
+            migrations: false
+            ssl: false
