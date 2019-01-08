@@ -1,11 +1,38 @@
 # CMS Utilization & Payment Database
+
 #### The purpose of the project is to provide a containerized database service loaded with CMS data in order to increase the utility of that data.
 
-#### This is an effort aimed to support the pursuit of healthcare price transparency by making it easier for stakeholders to compare costs and understand finer details related to healthcare costs (for example: variance between charges & payments, variance in payments between providers for the same service, or average costs nationally for individual healthcare services).
 
+...
+and ease access 
+by 
+reducing the technical overhead associated with 
+
+
+
+for others who are also pursuing healthcare price transparency 
+
+#### sdf
+
+stakeholders to compare costs and understand finer details related to healthcare costs like:
+...
+
+
+Examples of fine details:
+- variance between charges & payments
+- variance in payments between providers for the same service
+- average costs nationally for individual healthcare services
+
+Examples of analytic data:
+
+- Ranking of providers by Total Services Provided
+- Ranking of providers by HCPCS Services provider
+- Estimated sums each provider `charged` & `recieved` for each individual HCPCS Service
+- Ranking of providers by Total $ Charged to CMS
+- Ranking of providers by Total $ Paid from CMS
 
 For additional domain information see :
-- [`CMS Utilization & Payment Data`](https://data.cms.gov/Medicare-Physician-Supplier/Medicare-Provider-Utilization-and-Payment-Data-Phy/utc4-f9xp/data)
+- [`Source Data: CMS Utilization & Payment Data`](https://data.cms.gov/Medicare-Physician-Supplier/Medicare-Provider-Utilization-and-Payment-Data-Phy/utc4-f9xp/data)
 - [`NPPES NPI: wikipedia`](https://en.wikipedia.org/wiki/National_Provider_Identifier)
 - [`NPPES NPI: api`](https://npiregistry.cms.hhs.gov/)
 - [`HCPCS: wikipedia`](https://en.wikipedia.org/wiki/Healthcare_Common_Procedure_Coding_System)
@@ -13,40 +40,33 @@ For additional domain information see :
 
 ---
 
-
-
-
-
-
-
-
-
-
-## Getting Started
+## Quick Start
 
 ```
 make start
 ```
+- postgres database | port 5432
+- credentials
+	- **database:** govdata
+	- **user:** dbuser
+	- **password:** dbpassword
 
-This process starts the database (port 5432) (configured to maintain persistent data) and bootstraps the database by restoring a db.dump that is baked into the docker image.
+This command starts the database and restores the schema (structure & data) from a db.dump that is baked into the docker image.
 
-**NOTE 1:** Bootstraping Postgresql is done via a launch script that is run as part of the initiation process and restores the schema (structure & data) from a large `pg_dump` (1gb).
-
-This process will take 10+ mins to complete on the first run. Subsequent starts rely on persistent data.
+This initiation process will take 10+ mins (sample `time` report provided below) to complete on the first run. Subsequent starts rely on persistent data.
 
 	:: real	11m5.184s
 	:: user	0m15.680s
 	:: sys	0m2.800s
 
-
 ---
-
 
 ## Source data
 
+The foundation of this project is a `.csv` dataset titled, _Medicare Provider Utilization and Payment Data: Physician and Other Supplier PUF CY2016_. You can find the original data.
 
-Medicare Provider Utilization and Payment Data: Physician and Other Supplier PUF CY2016
-[`ssss`](https://data.cms.gov/Medicare-Physician-Supplier/Medicare-Provider-Utilization-and-Payment-Data-Phy/utc4-f9xp/data)
+You can find a full description of the dataset on [`their site`](https://data.cms.gov/Medicare-Physician-Supplier/Medicare-Provider-Utilization-and-Payment-Data-Phy/utc4-f9xp/data), but for convience, a summarized description is below: 
+
 ```
 The Centers for Medicare & Medicaid Services (CMS) has prepared a public data set that provides information on services and procedures provided to Medicare beneficiaries by physicians and other healthcare professionals.
 
@@ -55,13 +75,11 @@ The dataset contains information on utilization, payment (allowed amount and Med
 This data represents calendar year 2016 and contains 100% final-action physician/supplier Part B non-institutional line items for the Medicare fee-for-service population.
 ```
 
-
-
 ---
 
 ## Schema
 
-The data is organized into 9 tables (5 **source data** tables & 4 **analytic data** tables).
+Within the database, the data is organized into 9 tables (5 **source data** tables & 4 **analytic data** tables).
 
 ### Source Data Tables
 
@@ -69,7 +87,7 @@ The data is organized into 9 tables (5 **source data** tables & 4 **analytic dat
 
 - `services` contains all HCPCS Services represented in the source file.
 
-- `providers` (and related tables `providers_individuals` & `providers_organizations`) contains identity information & address for each provider (distinguished by the `providers.entity_type` value).
+- `providers` (and related tables `providers_individuals` & `providers_organizations`) contains identity information & address for each provider (distinguished by `providers.entity_type`).
 
 - `provider_performance` contains performance statistics for each HCPCS service provided by each provider.
 
@@ -79,12 +97,13 @@ The data is organized into 9 tables (5 **source data** tables & 4 **analytic dat
 
 - `service_performance` aggregates performance statistics for each HCPCS service across all providers.
 
-- `service_provider_performance` extends the data contained in `provider_performance`, estimates cumulative amounts charged & paid (`n_of_svcs` * `amt`), and also compares each providers performance attributes against **all other providers** that also perform the service (rankings)
+- `service_provider_performance` extends the data contained in `provider_performance`, estimates cumulative amounts charged & paid (`n_of_svcs` * `amt`), and also generates performance rankings by compares each provider's performance attributes against **all other providers** that also perform the service.
 
-- `service_provider_performance_summary` aggregates performance statistics by provider across all HCPCS services the provider supports. Also estimates cumulative amounts charged & paid (`n_of_svcs` * `amt`), compares each providers performance attributes against **all other providers** (rankings).
+- `service_provider_performance_summary` aggregates provider performance statistics across all HCPCS services the provider supports. Also estimates cumulative amounts charged & paid (`n_of_svcs` * `amt`) and generates performance rankings by comparing each provider's performance attributes against **all other providers**.
 
 - `service_provider_performance_summary_type` is used to define different ways of generating summaries (provider groupings and/or service subsets) within `service_provider_performance_summary`.
-Currently, it only supports summary types
+  
+	Currently summaries supported:
     - all providers + all services
     - all providers + non-drug HSPCS services
     - all providers + drug HSPCS services
@@ -96,11 +115,39 @@ Currently, it only supports summary types
 
 The first planned consumer of this DB was a GraphQL service.
 
-[`That project`](https://github.com/sudowing/cms-utilization-graphql) uses [`prisma`](https://github.com/prisma/prisma) to provide a GraphQL API to the data. Unfortunately, when developing that project, it was realized that prisma currently doesn't support composite keys (although the feature is proposed for [`Datamodel v2`](https://github.com/prisma/prisma/issues/3405)).
+[`That project`](https://github.com/sudowing/cms-utilization-graphql) uses [`prisma`](https://github.com/prisma/prisma) to provide a GraphQL API to the data. Unfortunately, when developing that project, I noticed that prisma currently doesn't support composite keys (although the feature is proposed for [`Datamodel v2`](https://github.com/prisma/prisma/issues/3405)).
 
 To resolve this in the meantime, new **auto incrementing** primary keys were defined (as `prisma_id`). The original keys still exist, but are no long the primary key for their respective tables.
 
 ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
