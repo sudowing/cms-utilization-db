@@ -6,3 +6,7 @@ etl/sql/cms.sql
 # local files
 volumes/db/data
 volumes/tmp
+
+# node_modules (required for prisma)
+node_modules
+package-lock.json
