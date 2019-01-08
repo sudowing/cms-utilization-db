@@ -32,8 +32,8 @@ For background knowledge see :
 ```
 make start
 ```
-- postgres database | port 5432
-- credentials
+- Postgres Database | port 5432
+- Credentials
 	- **database:** govdata
 	- **user:** dbuser
 	- **password:** dbpassword
@@ -45,6 +45,34 @@ This initiation process will take 10+ mins (sample `time` report provided below)
 	:: real	11m5.184s
 	:: user	0m15.680s
 	:: sys	0m2.800s
+
+---
+
+##  <a id="start-with-prisma"></a>Start with Prisma for GraphQL API
+
+```
+
+# get host ip address
+ifconfig | grep inet
+
+# update PRISMA_CONFIG in docker-compose.prisma.yml
+# by replacing __REPLACE__WITH__LOCAL__IP__ with ip address from above
+
+# start db & prisma service
+make start-with-prisma
+
+# ensure prisma is installed
+sudo npm i prisma
+
+# deploy prisma config to prisma server
+prisma deploy
+```
+- Postgres Database | port 5432
+- [`GraphQL Playground`](http://0.0.0.0:4466/) | port 4466
+
+This command starts the database and starts a prisma service that provides a GraphQL API to the data.
+
+**Note:** Before you can successfully deploy the prisma services, you must update the host defination inside the `PRISMA_CONFIG` environment variable stored in the `docker-compose.prisma.yml`. To accomplish this, simply replace the placeholder `__REPLACE__WITH__LOCAL__IP__` (near line 18) with the IP of your local machine so that the prisma container can reach the DB container.
 
 ---
 
