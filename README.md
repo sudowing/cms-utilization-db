@@ -1,7 +1,7 @@
 # CMS Utilization & Payment Database
-## The purpose of the project is to provide a containerized database service loaded with CMS data to increase the utility of the data resource.
+#### The purpose of the project is to provide a containerized database service loaded with CMS data in order to increase the utility of that data.
 
-### This is an effort aimed to support the pursuit of healthcare price transparency by making it easier for stakeholders to compare costs and understand finer details related to healthcare costs (for example: variance between charges & payments, variance in payments between providers for the same service, or average costs nationally for individual healthcare services).
+#### This is an effort aimed to support the pursuit of healthcare price transparency by making it easier for stakeholders to compare costs and understand finer details related to healthcare costs (for example: variance between charges & payments, variance in payments between providers for the same service, or average costs nationally for individual healthcare services).
 
 
 For additional domain information see :
@@ -42,18 +42,20 @@ This process will take 10+ mins to complete on the first run. Subsequent starts 
 ---
 
 
-#### Source data
+## Source data
 
 
 Medicare Provider Utilization and Payment Data: Physician and Other Supplier PUF CY2016
-
+[`ssss`](https://data.cms.gov/Medicare-Physician-Supplier/Medicare-Provider-Utilization-and-Payment-Data-Phy/utc4-f9xp/data)
+```
 The Centers for Medicare & Medicaid Services (CMS) has prepared a public data set that provides information on services and procedures provided to Medicare beneficiaries by physicians and other healthcare professionals.
 
 The dataset contains information on utilization, payment (allowed amount and Medicare payment), and submitted charges organized by National Provider Identifier (NPI), Healthcare Common Procedure Coding System (HCPCS) code, and place of service.
 
-	based on information from CMS administrative claims data for Medicare beneficiaries enrolled in the fee-for-service program available from the CMS Chronic Condition Data Warehouse (www.ccwdata.org).
+This data represents calendar year 2016 and contains 100% final-action physician/supplier Part B non-institutional line items for the Medicare fee-for-service population.
+```
 
-	calendar year 2016 and contains 100% final-action physician/supplier Part B non-institutional line items for the Medicare fee-for-service population.
+
 
 ---
 
@@ -65,46 +67,44 @@ The data is organized into 9 tables (5 **source data** tables & 4 **analytic dat
 
 ![cms-schema source-data-tables](assets/img/readme/cms_schema_source_data.png "CMS Schema | Tables based on .CSV Source Data")
 
-`services` contains all HCPCS Services represented in the source file.
+- `services` contains all HCPCS Services represented in the source file.
 
-`providers` (and related tables `providers_individuals` & `providers_organizations`) contains identity information & address for each provider (distinguished by the `providers.entity_type` value).
+- `providers` (and related tables `providers_individuals` & `providers_organizations`) contains identity information & address for each provider (distinguished by the `providers.entity_type` value).
 
-`provider_performance` contains performance statistics for each HCPCS service provided by each provider.
+- `provider_performance` contains performance statistics for each HCPCS service provided by each provider.
 
 ### Analytic Data Tables
 
 ![cms-schema analytic-data-tables](assets/img/readme/cms_schema_analytic_data.png "CMS Schema | Tables based on .CSV Source Data")
 
-`service_performance` aggregates performance statistics for each HCPCS service across all providers.
+- `service_performance` aggregates performance statistics for each HCPCS service across all providers.
 
-`service_provider_performance` extends the data contained in `provider_performance`, estimates cumulative amounts charged & paid (`n_of_svcs` * `amt`), and also compares each providers performance attributes against **all other providers** that also perform the service (rankings)
+- `service_provider_performance` extends the data contained in `provider_performance`, estimates cumulative amounts charged & paid (`n_of_svcs` * `amt`), and also compares each providers performance attributes against **all other providers** that also perform the service (rankings)
 
-`service_provider_performance_summary` aggregates performance statistics by provider across all HCPCS services the provider supports. Also estimates cumulative amounts charged & paid (`n_of_svcs` * `amt`), compares each providers performance attributes against **all other providers** (rankings).
+- `service_provider_performance_summary` aggregates performance statistics by provider across all HCPCS services the provider supports. Also estimates cumulative amounts charged & paid (`n_of_svcs` * `amt`), compares each providers performance attributes against **all other providers** (rankings).
 
-`service_provider_performance_summary_type` contains definations of the different ways to group providers in order to generate the data & rankings within `service_provider_performance_summary`.
-Currently, it only supports three groups (all providers + all services, all non-HSPCS services by all providers, and 
-all HSPCS services by all providers.
-Future plans are to group and rank by organizational membership (internal enterprise rankings).
+- `service_provider_performance_summary_type` is used to define different ways of generating summaries (provider groupings and/or service subsets) within `service_provider_performance_summary`.
+Currently, it only supports summary types
+    - all providers + all services
+    - all providers + non-drug HSPCS services
+    - all providers + drug HSPCS services
+    - [**`future`**](https://github.com/sudowing/cms-utilization-db/issues/1): enterprise providers + all services
 
 ---
 
 ## Prisma IDs
 
-The original purpose of this DB was to serve as the datastore for a GraphQL service.
+The first planned consumer of this DB was a GraphQL service.
 
-[`That project`](https://github.com/sudowing/cms-utilization-graphql) uses [`prisma`](https://github.com/prisma/prisma) to serve a GraphQL API to the data.
+[`That project`](https://github.com/sudowing/cms-utilization-graphql) uses [`prisma`](https://github.com/prisma/prisma) to provide a GraphQL API to the data. Unfortunately, when developing that project, it was realized that prisma currently doesn't support composite keys (although the feature is proposed for [`Datamodel v2`](https://github.com/prisma/prisma/issues/3405)).
 
-One thing I learned by building that project was that prisma currently doesn't support composite primary keys
-
-To solve this problem, new primary keys were defined (as `prisma_id`), which are all auto incrementing.
-
-The original keys still exist, but are no long the primary key for the respective tables.
+To resolve this in the meantime, new **auto incrementing** primary keys were defined (as `prisma_id`). The original keys still exist, but are no long the primary key for their respective tables.
 
 ---
 
 
 
-#### Problems // shortcomings
+#### Shortcomings of this Dataset
 
 This dataset is limited to services billed to CMS and does not include all payers.
 
@@ -169,7 +169,6 @@ This command connects to the container running the DB service and generates a sq
 
 
 **NOTE 1:** This sql.dump file is large (1gb) and as such, is `.gitignore`d and not stored in the repo. To generate this file (for inspection or when publishing a new docker image), you must generate this file **before** baking the docker image.
-
 
 ```
 make db-load-via-sql
