@@ -10,4 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 ### Fixed
 
-## [T.B.D](https://github.com/sudowing/cms-utilization-db/tree/vT.B.D) - 2019-01-06
+## [1.0.0](https://github.com/sudowing/cms-utilization-db/tree/v1.0.0) - 2019-01-07
+
+### Added
+- bash script for entire ETL process
+- bash script for managing `pg_dump` process
+- bash script for managing `pg_restore` process
+- `.sql` for building temp schema
+- `.sql` for destroying temp schema
+- `.sql` for building prod schema
+- `.sql` for loading prod schema
+- initial `cms.dump` file. Not stored in repo, but baked into Docker image.
