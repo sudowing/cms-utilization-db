@@ -10,11 +10,13 @@ Examples of detailed healthcare costs:
 - average costs nationally for individual healthcare services
 
 Examples of derived analytic data:
-- Ranking of providers by Total Services Provided
-- Ranking of providers by HCPCS Services provider
-- Estimated sums each provider `charged` & `received` for each individual HCPCS Service
-- Ranking of providers by Total $ Charged to CMS
-- Ranking of providers by Total $ Paid from CMS
+- Ranking of Providers by Total Services Provided
+- Ranking of Providers by HCPCS Services Provided
+- Estimated Sum Amount `charged` & `received` by Provider
+- Estimated Sum Amount `charged` & `received` by Provider & HCPCS Service
+- Estimated Sum Amount `charged` & `received` by HCPCS Service
+- Ranking of Providers by Total $ Charged to CMS
+- Ranking of Providers by Total $ Paid from CMS
 
 For background knowledge see :
 - [`Source Data: CMS Utilization & Payment Data`](https://data.cms.gov/Medicare-Physician-Supplier/Medicare-Provider-Utilization-and-Payment-Data-Phy/utc4-f9xp/data)
