@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 ### Fixed
 
+## [1.5.0](https://github.com/sudowing/cms-utilization-db/tree/v1.5.0) - 2019-01-09
+
+### Fixed
+- Prisma install & deploy instructions.
 
 ## [1.4.0](https://github.com/sudowing/cms-utilization-db/tree/v1.4.0) - 2019-01-09
 
