@@ -86,8 +86,8 @@ ifconfig | grep inet
 # start db & prisma service
 make start-with-prisma
 
-# ensure prisma is installed
-sudo npm i prisma
+# ensure prisma is installed globally
+sudo npm i -g prisma
 
 # deploy prisma config to prisma server
 prisma deploy
@@ -97,7 +97,9 @@ prisma deploy
 
 This command starts the database and starts a prisma service that provides a GraphQL API to the data.
 
-**Note:** Before you can successfully deploy the prisma services, you must update the host defination inside the `PRISMA_CONFIG` environment variable stored in the [`docker-compose.prisma.yml`](./docker-compose.prisma.yml). To accomplish this, simply replace the placeholder `__REPLACE__WITH__LOCAL__IP__` (near line 18) with the IP of your local machine so that the prisma container can reach the DB container.
+**Note 1:** Use Node v10.
+
+**Note 2:** Before you can successfully deploy the prisma services, you must update the host defination inside the `PRISMA_CONFIG` environment variable stored in the [`docker-compose.prisma.yml`](./docker-compose.prisma.yml). To accomplish this, simply replace the placeholder `__REPLACE__WITH__LOCAL__IP__` (near line 18) with the IP of your local machine so that the prisma container can reach the DB container.
 
 ---
 
