@@ -70,14 +70,14 @@ This initiation process will take 10+ mins (sample `time` report provided below)
 	:: real	11m5.184s
 	:: user	0m15.680s
 	:: sys	0m2.800s
-
 ---
 
 ##  <a id="start-with-prisma"></a>Start with Prisma for GraphQL API
 
-```
+#### Use this command OR `make start`. Not Both.
 
-# get host ip address
+```
+# get host ip address # this is the ip the prisma container will call to reach the db containers
 ifconfig | grep inet
 
 # update PRISMA_CONFIG in docker-compose.prisma.yml
@@ -87,15 +87,17 @@ ifconfig | grep inet
 make start-with-prisma
 
 # ensure prisma is installed globally
-sudo npm i -g prisma
+sudo npm i prisma
 
 # deploy prisma config to prisma server
-prisma deploy
+npx prisma deploy
 ```
 - Postgres Database | port 5432
 - [GraphQL Playground](http://0.0.0.0:4466/) | port 4466
 
 This command starts the database and starts a prisma service that provides a GraphQL API to the data.
+
+#### 
 
 **Note 1:** Use Node v10.
 
