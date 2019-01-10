@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 ### Fixed
 
+## [1.6.0](https://github.com/sudowing/cms-utilization-db/tree/v1.6.0) - 2019-01-09
+
+### Fixed
+- `start-with-prisma` make command. Added detach flag.
+
+### Added
+- Added Section in readme for distributing GraphQL Queries. Currently rely on storing them in GraphQL Bin and proving links.
+
 ## [1.5.0](https://github.com/sudowing/cms-utilization-db/tree/v1.5.0) - 2019-01-09
 
 ### Fixed
