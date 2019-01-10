@@ -37,6 +37,9 @@ For background knowledge see :
   * [Source Data Tables](#db-schema-tables-source)
   * [Analytic Data Tables](#db-schema-tables-analytic)
 * [Prisma IDs](#prisma-requirements)
+* [GraphQL Queries](#graphql-queries)
+  * [HCPCS Service Information & Aggregate Performance](#graphql-hcpcs-service-performance)
+  * [Provider Identity & Performance](#graphql-provider-id-and-performance)
 * [Development](#development)
   * [Run Service](#dev-run-Service)
   * [Container Maintenance](#dev-container-maintenance)
@@ -159,7 +162,20 @@ The first planned consumer of this DB was a GraphQL service.
 
 To resolve this in the meantime, new **auto incrementing** primary keys were defined (as `prisma_id`). The original keys still exist, but are no long the primary key for their respective tables.
 
+---
 
+##  <a id="graphql-queries"></a>GraphQL Queries
+
+GraphQL queries can be pretty overwhelming to the newly initiated.
+
+In order to speed adoption (and ease developers into the data), I've built out a few GraphQL queries and saved them on [GraphQL Bin](https://www.graphqlbin.com/v2/new) -- which is like a pastebin for these kinds of things.
+
+I'll add to this list regularly, so be sure to check back. Also, for anyone wanting to contribute... this is some low hanging fruit.
+
+### GraphQL Bin Stored Queries
+
+- <a id="graphql-hcpcs-service-performance"></a>[HCPCS Service Information & Aggregate Performance](https://graphqlbin.com/v2/6XZLfA)
+- <a id="graphql-provider-id-and-performance"></a>[Provider Identity & Performance](https://graphqlbin.com/v2/jZpRfl)
 
 ---
 
