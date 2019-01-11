@@ -27,7 +27,6 @@ For background knowledge see :
 
 ---
 
-
 ##  <a id="table-of-contents"></a>Table of Contents
 
 * [Quick Start](#quick-start)
@@ -38,8 +37,8 @@ For background knowledge see :
   * [Analytic Data Tables](#db-schema-tables-analytic)
 * [Prisma IDs](#prisma-requirements)
 * [GraphQL Queries](#graphql-queries)
-  * [HCPCS Service Information & Aggregate Performance](#graphql-hcpcs-service-performance)
-  * [Provider Identity & Performance](#graphql-provider-id-and-performance)
+  * [HCPCS Service Performance & Leaders](#graphql-hcpcs-service-performance-and-leaders)
+  * [Provider Identiy & Service Performance](#graphql-provider-id-and-service-performance)
 * [Development](#development)
   * [Run Service](#dev-run-Service)
   * [Container Maintenance](#dev-container-maintenance)
@@ -51,7 +50,6 @@ For background knowledge see :
 * [Additional Data Sets](#additional-data-sets)
 * [Versioning](#versioning)
 * [License](#license)
-
 
 ---
 
@@ -174,8 +172,9 @@ I'll add to this list regularly, so be sure to check back. Also, for anyone want
 
 ### GraphQL Bin Stored Queries
 
-- <a id="graphql-hcpcs-service-performance"></a>[HCPCS Service Information & Aggregate Performance](https://graphqlbin.com/v2/6XZLfA)
-- <a id="graphql-provider-id-and-performance"></a>[Provider Identity & Performance](https://graphqlbin.com/v2/jZpRfl)
+- <a id="graphql-hcpcs-service-performance-and-leaders"></a>[HCPCS Service Performance & Leaders](https://graphqlbin.com/v2/WL3kU6)
+- <a id="graphql-provider-id-and-service-performance"></a>[Provider Identiy & Service Performance](https://graphqlbin.com/v2/1WK1tq)
+
 
 ---
 
