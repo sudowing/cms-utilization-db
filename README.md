@@ -35,6 +35,7 @@ For background knowledge see :
 * [Schema](#db-schema)
   * [Source Data Tables](#db-schema-tables-source)
   * [Analytic Data Tables](#db-schema-tables-analytic)
+* [Geocoding Addresses](#geocoding)
 * [Prisma IDs](#prisma-requirements)
 * [GraphQL Queries](#graphql-queries)
   * [HCPCS Service Performance & Leaders](#graphql-hcpcs-service-performance-and-leaders)
@@ -149,6 +150,30 @@ Within the database, the data is organized into 9 tables (5 **source data** tabl
     - all providers + non-drug HSPCS services
     - all providers + drug HSPCS services
     - [**planned feature**](https://github.com/sudowing/cms-utilization-db/issues/1): enterprise providers + all services
+
+---
+
+##  <a id="geocoding"></a> Geocoding Provider Addresses
+
+The next component of this project is a [GraphQL API](https://github.com/sudowing/cms-utilization-api) that will leverage this db along with two other data sources -- the [NPI Registry Public Search](https://npiregistry.cms.hhs.gov) __and__ an elasticsearch cluster seeded with these cms utilization records.
+
+There are several benefits of using elastic in an application, but __the most important to me__ is its ability to power geographic searches, which would allow users to search by proximity for providers that perform specific HCPCS services.
+
+The value here is simple -- while being able to lookup the average costs for HCPCS services nationally is useful, being able to see what the costs are for the providers in your market has much greater utility.
+
+Implementing proximity search is pretty easy using native features in Elastic, but before I could implement that with this dataset... I'd have to add Geo-Coordinates to over 500k unique addresses.
+
+I had little appitite for setting up a job that would batch these addresses against the geocoding services I've used before (google, mapquest, census) -- as those are throttled and would require considerable time & effort.
+
+Instead, I set out to find a geocoding service that would be ideal for a (large) one-time batch job. Pricing was very important, as it always is. As was speed -- as I recently started at a startup and have little time to hack.
+
+After a few searches, I found a service that fit the bill: [Geocodio](https://www.geocod.io/).
+
+[Their pricing page](https://www.geocod.io/pricing/) included a pricing calculator with a toggle for one-time/recurring (which was exactly what I was looking for) and I found the price reasonable: ~$235 for 525k unique addresses. I was also pretty happy that the estimated processing time was 2 hours. __Decision made.__
+
+I exported the unique addresses from the dataset to a csv, uploaded to their service, and added the [results](etl/csv/geocodio_distinct_provider_locations.csv) to the original provider records in the `providers` table. Once that was completed, I seeded an elastic instance in the manner that would power autocomplete, suggestion and geo search.
+
+For more detail on how that process works, checkout the [cms-utilization-search](https://github.com/sudowing/cms-utilization-search) repo.
 
 ---
 
