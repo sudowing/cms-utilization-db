@@ -155,9 +155,9 @@ Within the database, the data is organized into 9 tables (5 **source data** tabl
 
 ##  <a id="geocoding"></a> Geocoding Provider Addresses
 
-The next component of this project is a [GraphQL API](https://github.com/sudowing/cms-utilization-api) that will leverage this db along with two other data sources -- the [NPI Registry Public Search](https://npiregistry.cms.hhs.gov) __and__ an elasticsearch cluster seeded with these cms utilization records.
+The next piece in this larger CMS project is a [GraphQL API](https://github.com/sudowing/cms-utilization-api) that will leverage this db along with two other data sources -- the [NPI Registry Public Search](https://npiregistry.cms.hhs.gov) __and__ an Elastic instance seeded with records from this database.
 
-There are several benefits of using elastic in an application, but __the most important to me__ is its ability to power geographic searches, which would allow users to search by proximity for providers that perform specific HCPCS services.
+There are several benefits of using Elastic in an application, but __the most important to me__ is its ability to power geographic searches, which would allow users to search by proximity for providers that perform specific HCPCS services.
 
 The value here is simple -- while being able to lookup the average costs for HCPCS services nationally is useful, being able to see what the costs are for the providers in your market has much greater utility.
 
@@ -169,11 +169,13 @@ Instead, I set out to find a geocoding service that would be ideal for a (large)
 
 After a few searches, I found a service that fit the bill: [Geocodio](https://www.geocod.io/).
 
-[Their pricing page](https://www.geocod.io/pricing/) included a pricing calculator with a toggle for one-time/recurring (which was exactly what I was looking for) and I found the price reasonable: ~$235 for 525k unique addresses. I was also pretty happy that the estimated processing time was 2 hours. __Decision made.__
+[Their pricing page](https://www.geocod.io/pricing/) included a pricing calculator with a toggle for one-time/recurring (which was exactly what I was looking for) and I found the price reasonable: ~$235 for 525k unique addresses. I was also pretty happy that the estimated processing time was 2 hours. __Decision made *.__
 
-I exported the unique addresses from the dataset to a csv, uploaded to their service, and added the [results](etl/csv/geocodio_distinct_provider_locations.csv) to the original provider records in the `providers` table. Once that was completed, I seeded an elastic instance in the manner that would power autocomplete, suggestion and geo search.
+I exported the unique addresses from the dataset to a csv, uploaded to their service, and added the [results](etl/csv/geocodio_distinct_provider_locations.csv) to the original provider records in the `providers` table.
 
-For more detail on how that process works, checkout the [cms-utilization-search](https://github.com/sudowing/cms-utilization-search) repo.
+And now that I've got the geocoordinates available in the db, I can seed an Elastic instance in the manner that will power autocomplete, suggestion and geo search. For more detail on how that process works, checkout the [cms-utilization-search](https://github.com/sudowing/cms-utilization-search) repo.
+
+##### __*NOTE:__ __After__ selecting Geocodio as my vendor for geocoding services -- I reached out to them to see if they'd be willing to beat the estimate provided by their pricing calculator, because of the open-source nature of this project. Specifically, I offered them a mention here for a discounted rate and they agreed. #Victory
 
 ---
 

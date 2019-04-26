@@ -11,6 +11,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 ### Fixed
 
+## [1.11.0](https://github.com/sudowing/cms-utilization-db/tree/v1.11.0) - 2019-04-26
+
+### Changed
+- Updated tags for docker images used by docker compose.
+
+## [1.10.0](https://github.com/sudowing/cms-utilization-db/tree/v1.10.0) - 2019-04-26
+
+### Changed
+- Updated Readme with clean language regarding Geocodio support.
+
 ## [1.7.0](https://github.com/sudowing/cms-utilization-db/tree/v1.7.0) - 2019-01-10
 
 ### Changed
